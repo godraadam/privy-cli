@@ -10,3 +10,8 @@ __pycache__/
 env/
 venv/
 .vscode/
+
+# PyInstaller
+build/
+dist/
+privy.spec

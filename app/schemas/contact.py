@@ -7,6 +7,7 @@ class PrivyContactCreate(BaseModel):
     alias: str
     pubkey: str
     trusted: Optional[bool] = False
-    
+
+
 class PrivyContact(PrivyContactCreate):
     address: str

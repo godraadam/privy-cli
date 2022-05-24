@@ -19,7 +19,7 @@ def add(
     try:
         response = requests.post(
             f"{router_url}/api/account/add",
-            data={"username": username, "password": password},
+            json={"username": username, "password": password},
         )
         if response.status_code == 409:
             # TODO: separate username for pubkey gen from username alias
@@ -28,7 +28,8 @@ def add(
             typer.echo("Account addded successfully!")
     except requests.exceptions.ConnectionError:
         typer.echo("The privy router is not running! Please start it via privy init!")
-        
+
+
 @app.command()
 def create(
     username: Optional[str] = typer.Option(None, "--name", "-n", prompt=True),
@@ -41,8 +42,8 @@ def create(
     """
     try:
         response = requests.post(
-            f"{router_url}/api/account/add",
-            data={"username": username, "password": password},
+            f"{router_url}/api/account/create",
+            json={"username": username, "password": password},
         )
         if response.status_code == 409:
             # TODO: separate username for pubkey gen from username alias
@@ -62,7 +63,9 @@ def remove(username: str = typer.Argument(...)):
         response = requests.post(f"{router_url}/api/account/remove/{username}")
         if response.status_code == 404:
             # TODO: separate username for pubkey gen from username alias
-            typer.echo(f"No user by the name {username} was found, nothing was deleted.")
+            typer.echo(
+                f"No user by the name {username} was found, nothing was deleted."
+            )
         else:
             typer.echo("Account removed successfully!")
     except requests.exceptions.ConnectionError:

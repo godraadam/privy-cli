@@ -36,6 +36,9 @@ def ls():
     """
     try:
         response = requests.get(f"{router_url}/api/contact/ls")
+        if response.status_code == 403:
+            typer.echo("You are not logged in! Use privy login first!")
+            raise typer.Exit()
         if response.status_code != 200:
             typer.echo(f"Something went wrong... Error code {response.status_code}")
             raise typer.Exit()
@@ -66,8 +69,6 @@ def rm(
         if response.status_code != 200:
             typer.echo(f"Something went wrong... Error code {response.status_code}")
             raise typer.Exit()
-        typer.echo(
-            f"{alias} removed from contacts"
-        )
+        typer.echo(f"{alias} removed from contacts")
     except requests.exceptions.ConnectionError:
         typer.echo("The privy router is not running! Please start it via privy init!")

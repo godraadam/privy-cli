@@ -4,7 +4,7 @@ import subprocess
 from typing import Optional
 import typer
 from schemas.login_schema import LoginSchema
-from commands import contact, account
+from commands import contact, account, message
 import requests
 from store import router_url, path_to_router
 
@@ -13,6 +13,7 @@ app = typer.Typer()
 
 app.add_typer(contact.app, name="contact")
 app.add_typer(account.app, name="account")
+app.add_typer(message.app, name="message")
 
 
 @app.command()
@@ -91,7 +92,9 @@ def whoami():
         if response.status_code == 404:
             typer.echo(f"No one is logged in at the moment.")
         else:
-            typer.echo(f"Logged in as {dict(response.json()).get('username')}")
+            typer.echo(
+                f"Logged in as {response.json()['username']} : {response.json()['pubkey']}"
+            )
     except requests.exceptions.ConnectionError:
         typer.echo("The privy router is not running! Please start it via privy init!")
 
