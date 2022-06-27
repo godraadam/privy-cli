@@ -13,5 +13,4 @@ venv/
 
 # PyInstaller
 build/
-dist/
 privy.spec
